@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +13,9 @@ public class GameManager : MonoBehaviour
     private bool isChecking = false;
     private int matchedCount = 0;
     public int totalPairCount = 4;   // 카드 쌍 개수
+
+    public GameObject clearText;
+    public Card[] cards;
 
     void Awake()
     {
@@ -55,6 +60,7 @@ public class GameManager : MonoBehaviour
             if (matchedCount == totalPairCount)
             {
                 Debug.Log("게임 클리어!");
+                clearText.SetActive(true);
             }
         }
         else
@@ -72,15 +78,47 @@ public class GameManager : MonoBehaviour
         isChecking = false;
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void ShuffleCards()
+    {
+        for (int i = 0; i < cards.Length; i++)
+        {
+            int randomIndex = Random.Range(i, cards.Length);
+
+            Vector3 tempPosition = cards[i].transform.position;
+            cards[i].transform.position = cards[randomIndex].transform.position;
+            cards[randomIndex].transform.position = tempPosition;
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        ShuffleCards();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mouseWorldPos, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                Card card = hit.collider.GetComponent<Card>();
+
+                if (card != null)
+                {
+                    Debug.Log("카드 클릭 성공: " + card.name);
+                    card.OpenCard();
+                }
+            }
+        }
     }
 }

@@ -13,12 +13,21 @@ public class Card : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log(gameObject.name + " 시작됨");
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = backSprite;   // 시작할 때는 뒷면
     }
 
+    void OnMouseEnter()
+    {
+        Debug.Log(gameObject.name + " 마우스 올라감");
+    }
+
     void OnMouseDown()
     {
+        Debug.Log("카드 클릭됨");
+        
         // 이미 열린 카드거나, 맞춘 카드면 클릭 무시
         if (isOpen || isMatched)
             return;
@@ -28,6 +37,7 @@ public class Card : MonoBehaviour
 
         // 게임 매니저에게 "이 카드 클릭됐어요" 알리기
         GameManager.instance.SelectCard(this);
+        
     }
 
     public void OpenCard()
