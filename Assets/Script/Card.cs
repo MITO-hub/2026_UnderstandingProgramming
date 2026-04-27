@@ -10,18 +10,23 @@ public class Card : MonoBehaviour
     private bool isOpen = false;
     private bool isMatched = false;
 
+    void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Debug.Log(gameObject.name + " 시작됨");
-
-        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = backSprite;   // 시작할 때는 뒷면
     }
 
-    void OnMouseEnter()
+    public void Init(int id, Sprite sprite)
     {
-        Debug.Log(gameObject.name + " 마우스 올라감");
+        cardId = id;
+        frontSprite = sprite;
+        CloseCard();
     }
 
     void OnMouseDown()

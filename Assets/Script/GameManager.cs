@@ -2,38 +2,84 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [Header("설정")]
+    public int pairCount = 4;
+    public Card cardPrefab;
+    public Sprite[] cardSprites;
+
+    [Header("배치")]
+    public int column = 4;
+    public float xSpacing = 3.0f;
+    public float ySpacing = 4.0f;
+    public Vector2 startPosition = new Vector2(-6f, 3f);
 
     private Card firstCard;
     private Card secondCard;
 
     private bool isChecking = false;
     private int matchedCount = 0;
-    public int totalPairCount = 4;   // 카드 쌍 개수
-
-    public GameObject clearText;
-    public Card[] cards;
 
     void Awake()
     {
         instance = this;
     }
 
+    void Start()
+    {
+        CreateCards();
+    }
+
+    void CreateCards()
+    {
+        List<int> ids = new List<int>();
+
+        // 1. 페어 생성
+        for (int i = 0; i < pairCount; i++)
+        {
+            ids.Add(i);
+            ids.Add(i);
+        }
+
+        // 2. 섞기
+        for (int i = 0; i < ids.Count; i++)
+        {
+            int rand = Random.Range(i, ids.Count);
+
+            int temp = ids[i];
+            ids[i] = ids[rand];
+            ids[rand] = temp;
+        }
+
+        // 3. 카드 생성
+        for (int i = 0; i < ids.Count; i++)
+        {
+            int id = ids[i];
+
+            float x = startPosition.x + (i % column) * xSpacing;
+            float y = startPosition.y - (i / column) * ySpacing;
+
+            Vector3 pos = new Vector3(x, y, 0);
+
+            Card card = Instantiate(cardPrefab, pos, Quaternion.identity);
+
+            card.Init(id, cardSprites[id]);
+        }
+    }
     public void SelectCard(Card selectedCard)
     {
-        // 비교 중이면 클릭 막기
         if (isChecking)
             return;
 
-        // 첫 번째 카드 선택
         if (firstCard == null)
         {
             firstCard = selectedCard;
         }
-        // 두 번째 카드 선택
         else if (secondCard == null)
         {
             secondCard = selectedCard;
@@ -45,63 +91,31 @@ public class GameManager : MonoBehaviour
     {
         isChecking = true;
 
-        // 잠깐 기다려서 플레이어가 카드 볼 시간 주기
         yield return new WaitForSeconds(1f);
 
         if (firstCard.cardId == secondCard.cardId)
         {
-            // 같은 카드면 맞춘 처리
             firstCard.SetMatched();
             secondCard.SetMatched();
+
             matchedCount++;
 
-            Debug.Log("짝 맞춤!");
-
-            if (matchedCount == totalPairCount)
+            if (matchedCount == pairCount)
             {
                 Debug.Log("게임 클리어!");
-                clearText.SetActive(true);
             }
         }
         else
         {
-            // 다르면 다시 닫기
             firstCard.CloseCard();
             secondCard.CloseCard();
-
-            Debug.Log("틀렸습니다!");
         }
 
-        // 다시 선택할 수 있게 초기화
         firstCard = null;
         secondCard = null;
         isChecking = false;
     }
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void ShuffleCards()
-    {
-        for (int i = 0; i < cards.Length; i++)
-        {
-            int randomIndex = Random.Range(i, cards.Length);
-
-            Vector3 tempPosition = cards[i].transform.position;
-            cards[i].transform.position = cards[randomIndex].transform.position;
-            cards[randomIndex].transform.position = tempPosition;
-        }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        ShuffleCards();
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
