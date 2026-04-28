@@ -305,7 +305,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -461,17 +461,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82df3459945f2884795d7c3c4c986cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  pairCount: 4
+  pairCount: 2
   cardPrefab: {fileID: -2912945108808915027, guid: dcfe3f1e652411941bf7cbc14395c5df, type: 3}
   cardSprites:
   - {fileID: 7219650766138810423, guid: 1a2504d13859bc843b702e23b2649c5b, type: 3}
   - {fileID: 2957020226000766443, guid: 1a74dc4664b73b44f9b6103c2c2e9e25, type: 3}
   - {fileID: -9212377461828813534, guid: b0a40bff537aee24bb5f4b265ae1dfcb, type: 3}
   - {fileID: -4759509827412318179, guid: 9cbba438041ba5847b2e832b42bda229, type: 3}
-  column: 4
+  - {fileID: -9041693938193507938, guid: 6478315444cd4e345b3cac544fc09808, type: 3}
+  - {fileID: 5210618780496722898, guid: 239b039c3981faf4989e4d380981ca8f, type: 3}
+  - {fileID: -6216050759795023841, guid: 8116fb385b2c7734fa1a22b5a29bf76d, type: 3}
+  - {fileID: -6427748515633789099, guid: 909ce9928a7801e41a658ac97e0e6fec, type: 3}
+  column: 2
   xSpacing: 3
   ySpacing: 4
-  startPosition: {x: -6, y: 3}
+  startPosition: {x: -12, y: 3}
 --- !u!4 &639531173
 Transform:
   m_ObjectHideFlags: 0

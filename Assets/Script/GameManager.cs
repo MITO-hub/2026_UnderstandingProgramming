@@ -35,18 +35,23 @@ public class GameManager : MonoBehaviour
         CreateCards();
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     void CreateCards()
     {
         List<int> ids = new List<int>();
 
-        // 1. 其绢 积己
+        // 其绢 积己
         for (int i = 0; i < pairCount; i++)
         {
             ids.Add(i);
             ids.Add(i);
         }
 
-        // 2. 集扁
+        // 集扁
         for (int i = 0; i < ids.Count; i++)
         {
             int rand = Random.Range(i, ids.Count);
@@ -56,7 +61,7 @@ public class GameManager : MonoBehaviour
             ids[rand] = temp;
         }
 
-        // 3. 墨靛 积己
+        // 墨靛 积己
         for (int i = 0; i < ids.Count; i++)
         {
             int id = ids[i];
