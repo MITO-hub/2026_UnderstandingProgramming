@@ -18,6 +18,8 @@ public class Card : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        SoundManager.Instance.PlayBGM();
+
         Debug.Log(gameObject.name + " 시작됨");
         spriteRenderer.sprite = backSprite;   // 시작할 때는 뒷면
     }

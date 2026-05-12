@@ -130,10 +130,12 @@ public class GameManager : MonoBehaviour
 
             if (hit.collider != null)
             {
+                SoundManager.Instance.PlaySoundFx();
                 Card card = hit.collider.GetComponent<Card>();
 
                 if (card != null)
                 {
+                    SoundManager.Instance.PlaySoundFx();
                     Debug.Log("카드 클릭 성공: " + card.name);
                     card.OpenCard();
                 }
